@@ -3,8 +3,8 @@ import { NavLink } from "@/components/NavLink";
 
 const navItems = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
-  { title: "Invoices", url: "/invoices", icon: FileText },
   { title: "Inventory", url: "/inventory", icon: Package },
+  { title: "Invoices", url: "/invoices", icon: FileText },
   { title: "Customers", url: "/customers", icon: Users },
   { title: "Sales Reports", url: "/sales-reports", icon: BarChart3 },
   { title: "Settings", url: "/settings", icon: Settings },

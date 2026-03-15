@@ -30,7 +30,7 @@ const AddPart = () => {
           </div>
         </header>
 
-        <div className="flex-1 p-6 pt-16 max-w-4xl">
+        <div className="flex-1 p-6 pt-20 max-w-4xl">
           <h1 className="text-2xl font-bold text-foreground">Register New Car Part</h1>
           <p className="text-muted-foreground mt-1 mb-8">
             Create a new listing for the Lagos warehouse inventory system.
