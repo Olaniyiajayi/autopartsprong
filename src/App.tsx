@@ -8,6 +8,8 @@ import Inventory from "./pages/Inventory.tsx";
 import Invoices from "./pages/Invoices.tsx";
 import AddPart from "./pages/AddPart.tsx";
 import BulkUpload from "./pages/BulkUpload.tsx";
+import Customers from "./pages/Customers.tsx";
+import AddCustomer from "./pages/AddCustomer.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -24,6 +26,8 @@ const App = () => (
           <Route path="/inventory/add" element={<AddPart />} />
           <Route path="/inventory/bulk-upload" element={<BulkUpload />} />
           <Route path="/invoices" element={<Invoices />} />
+          <Route path="/customers" element={<Customers />} />
+          <Route path="/customers/add" element={<AddCustomer />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
