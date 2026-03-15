@@ -1,8 +1,9 @@
-import { PlusCircle, FileText, QrCode } from "lucide-react";
+import { PlusCircle, Upload, FileText, QrCode } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const actions = [
   { label: "Add Part", icon: PlusCircle, url: "/inventory/add" },
+  { label: "Bulk Upload", icon: Upload, url: "/inventory/bulk-upload" },
   { label: "Create Invoice", icon: FileText, url: "/invoices" },
   { label: "Scan Label", icon: QrCode, url: "" },
 ];

@@ -1,9 +1,10 @@
-import { LayoutDashboard, FileText, Package, Users, BarChart3, Settings } from "lucide-react";
+import { LayoutDashboard, FileText, Package, Upload, Users, BarChart3, Settings } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 
 const navItems = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
   { title: "Inventory", url: "/inventory", icon: Package },
+  { title: "Bulk Upload", url: "/inventory/bulk-upload", icon: Upload },
   { title: "Invoices", url: "/invoices", icon: FileText },
   { title: "Customers", url: "/customers", icon: Users },
   { title: "Sales Reports", url: "/sales-reports", icon: BarChart3 },
@@ -32,7 +33,7 @@ export function AppSidebar() {
           <NavLink
             key={item.title}
             to={item.url}
-            end={item.url === "/"}
+            end={item.url === "/" || item.url === "/inventory"}
             className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
             activeClassName="bg-accent text-accent-foreground font-medium"
           >

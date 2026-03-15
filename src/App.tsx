@@ -7,6 +7,7 @@ import Index from "./pages/Index.tsx";
 import Inventory from "./pages/Inventory.tsx";
 import Invoices from "./pages/Invoices.tsx";
 import AddPart from "./pages/AddPart.tsx";
+import BulkUpload from "./pages/BulkUpload.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/inventory" element={<Inventory />} />
           <Route path="/inventory/add" element={<AddPart />} />
+          <Route path="/inventory/bulk-upload" element={<BulkUpload />} />
           <Route path="/invoices" element={<Invoices />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
