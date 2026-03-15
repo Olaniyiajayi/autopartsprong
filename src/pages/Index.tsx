@@ -12,7 +12,7 @@ const Index = () => {
       <AppSidebar />
       <main className="flex-1 flex flex-col pl-64">
         <DashboardHeader />
-        <div className="flex-1 p-6 pt-16 space-y-6">
+        <div className="flex-1 p-6 pt-20 space-y-6">
           {/* Top row: Sales + Quick Actions */}
           <div className="grid grid-cols-4 gap-4">
             <SalesCard />

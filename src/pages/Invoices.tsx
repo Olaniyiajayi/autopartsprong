@@ -14,7 +14,7 @@ const Invoices = () => {
       <AppSidebar />
       <main className="flex-1 flex flex-col pl-64 bg-background">
         <InvoicesHeader />
-        <div className="flex-1 p-6 pt-16 space-y-4">
+        <div className="flex-1 p-6 pt-20 space-y-4">
           {/* Tabs */}
           <div className="flex gap-6 border-b border-border">
             {tabs.map((tab) => (
