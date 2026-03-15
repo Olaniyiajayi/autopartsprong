@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 export function DashboardHeader() {
   return (
-    <header className="flex items-center justify-between px-6 py-4 border-b border-border bg-card">
+    <header className="fixed top-0 left-64 right-0 z-10 flex items-center justify-between px-6 py-4 border-b border-border bg-card">
       <div>
         <h1 className="text-2xl font-bold text-foreground">
           Good Morning, Alex 👋

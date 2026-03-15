@@ -9,7 +9,7 @@ const Inventory = () => {
       <AppSidebar />
       <main className="flex-1 flex flex-col pl-64 bg-background">
         <InventoryHeader />
-        <div className="flex-1 p-6 space-y-4">
+        <div className="flex-1 p-6 pt-16 space-y-4">
           <InventoryFilters />
           <InventoryTable />
         </div>

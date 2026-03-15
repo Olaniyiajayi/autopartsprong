@@ -12,7 +12,7 @@ const AddPart = () => {
       <AppSidebar />
       <main className="flex-1 flex flex-col pl-64 bg-background">
         {/* Header */}
-        <header className="flex items-center justify-between px-6 py-4 border-b border-border bg-card">
+        <header className="fixed top-0 left-64 right-0 z-10 flex items-center justify-between px-6 py-4 border-b border-border bg-card">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <button onClick={() => navigate("/inventory")} className="hover:text-foreground transition-colors">
               Inventory
@@ -30,7 +30,7 @@ const AddPart = () => {
           </div>
         </header>
 
-        <div className="flex-1 p-6 max-w-4xl">
+        <div className="flex-1 p-6 pt-16 max-w-4xl">
           <h1 className="text-2xl font-bold text-foreground">Register New Car Part</h1>
           <p className="text-muted-foreground mt-1 mb-8">
             Create a new listing for the Lagos warehouse inventory system.

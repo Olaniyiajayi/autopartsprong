@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 
 export function InventoryHeader() {
   return (
-    <header className="flex items-center justify-between px-6 py-4 border-b border-border bg-card">
+    <header className="fixed top-0 left-64 right-0 z-10 flex items-center justify-between px-6 py-4 border-b border-border bg-card">
       <h1 className="text-2xl font-bold text-foreground">Inventory Management</h1>
       <div className="flex items-center gap-3">
         <div className="relative">
