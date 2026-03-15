@@ -12,7 +12,7 @@ const navItems = [
 
 export function AppSidebar() {
   return (
-    <aside className="w-64 min-h-screen bg-card border-r border-border flex flex-col">
+    <aside className="fixed inset-y-0 left-0 z-10 w-64 min-h-screen bg-card border-r border-border flex flex-col">
       {/* Logo */}
       <div className="p-6 flex items-center gap-3">
         <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">

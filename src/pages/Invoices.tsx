@@ -12,7 +12,7 @@ const Invoices = () => {
   return (
     <div className="flex min-h-screen w-full">
       <AppSidebar />
-      <main className="flex-1 flex flex-col bg-background">
+      <main className="flex-1 flex flex-col pl-64 bg-background">
         <InvoicesHeader />
         <div className="flex-1 p-6 space-y-4">
           {/* Tabs */}

@@ -10,7 +10,7 @@ const AddPart = () => {
   return (
     <div className="flex min-h-screen w-full">
       <AppSidebar />
-      <main className="flex-1 flex flex-col bg-background">
+      <main className="flex-1 flex flex-col pl-64 bg-background">
         {/* Header */}
         <header className="flex items-center justify-between px-6 py-4 border-b border-border bg-card">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
