@@ -3,7 +3,8 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, MoreVertical } from "lucide-react";
+import { ChevronLeft, ChevronRight, MoreVertical, FileText, Plus } from "lucide-react";
+import { EmptyState } from "@/components/EmptyState";
 
 const invoices = [
   { id: "INV-8821", date: "Oct 24, 2023", customer: "Emeka Obi", amount: 450000, status: "Paid", payment: "OPay" },
