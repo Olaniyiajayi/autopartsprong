@@ -7,56 +7,11 @@ import { ChevronLeft, ChevronRight, Package, Plus } from "lucide-react";
 import { EmptyState } from "@/components/EmptyState";
 import { useNavigate } from "react-router-dom";
 
-const inventoryItems = [
-  {
-    image: "🔧",
-    name: "Toyota Camry Brake Pads (Front)",
-    sku: "BP-TY-001",
-    vehicle: "Toyota Camry (2018-2023)",
-    condition: "Tokunbo",
-    conditionColor: "bg-muted text-foreground",
-    stock: 15,
-    maxStock: 20,
-    stockColor: "bg-primary",
-    price: 25000,
-  },
-  {
-    image: "⚙️",
-    name: "Honda Civic Alternator",
-    sku: "ALT-HN-042",
-    vehicle: "Honda Civic (2012-2016)",
-    condition: "New",
-    conditionColor: "bg-green-100 text-green-700",
-    stock: 8,
-    maxStock: 20,
-    stockColor: "bg-warning",
-    price: 85000,
-  },
-  {
-    image: "🔩",
-    name: "Lexus RX350 Shock Absorbers",
-    sku: "SH-LX-009",
-    vehicle: "Lexus RX350",
-    condition: "Nigerian Used",
-    conditionColor: "bg-purple-100 text-purple-700",
-    stock: 2,
-    maxStock: 20,
-    stockColor: "bg-destructive",
-    price: 45000,
-  },
-  {
-    image: "🏎️",
-    name: "Mercedes C-Class AMG Grille",
-    sku: "GR-MB-012",
-    vehicle: "Mercedes Benz C300 (W205)",
-    condition: "Tokunbo",
-    conditionColor: "bg-muted text-foreground",
-    stock: 4,
-    maxStock: 20,
-    stockColor: "bg-warning",
-    price: 120000,
-  },
-];
+const inventoryItems: Array<{
+  image: string; name: string; sku: string; vehicle: string;
+  condition: string; conditionColor: string; stock: number;
+  maxStock: number; stockColor: string; price: number;
+}> = [];
 
 export function InventoryTable() {
   const navigate = useNavigate();
