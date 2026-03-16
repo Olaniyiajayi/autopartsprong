@@ -3,7 +3,8 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, MoreVertical } from "lucide-react";
+import { ChevronLeft, ChevronRight, MoreVertical, FileText, Plus } from "lucide-react";
+import { EmptyState } from "@/components/EmptyState";
 
 const invoices = [
   { id: "INV-8821", date: "Oct 24, 2023", customer: "Emeka Obi", amount: 450000, status: "Paid", payment: "OPay" },
@@ -29,6 +30,22 @@ export function InvoicesTable({ activeTab }: Props) {
   const filtered = activeTab === "All Invoices"
     ? invoices
     : invoices.filter((inv) => inv.status === activeTab);
+
+  if (filtered.length === 0) {
+    return (
+      <div className="bg-card rounded-xl border border-border">
+        <EmptyState
+          icon={FileText}
+          title={activeTab === "All Invoices" ? "No invoices yet" : `No ${activeTab.toLowerCase()} invoices`}
+          description={activeTab === "All Invoices" 
+            ? "Create your first invoice to start tracking payments and revenue."
+            : `There are no invoices with "${activeTab}" status right now.`}
+          actionLabel={activeTab === "All Invoices" ? "Create Invoice" : undefined}
+          actionIcon={Plus}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="bg-card rounded-xl border border-border">

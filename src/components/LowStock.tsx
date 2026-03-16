@@ -1,4 +1,5 @@
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, PackageCheck } from "lucide-react";
+import { EmptyState } from "@/components/EmptyState";
 
 const items = [
   { name: "Toyota Oil Filter (A1)", status: "Only 2 left" },
@@ -17,17 +18,27 @@ export function LowStock() {
           6 ITEMS
         </span>
       </div>
-      <div className="space-y-3">
-        {items.map((item, i) => (
-          <div key={i} className="flex items-center justify-between py-2 px-3 rounded-lg border border-border">
-            <div>
-              <p className="text-sm font-medium text-foreground">{item.name}</p>
-              <p className="text-xs text-muted-foreground">{item.status}</p>
-            </div>
-            <button className="text-sm font-medium text-primary hover:underline">Restock</button>
+      {items.length === 0 ? (
+        <div className="py-4">
+          <div className="flex flex-col items-center text-center py-6">
+            <PackageCheck className="w-8 h-8 text-muted-foreground mb-2" />
+            <p className="text-sm font-medium text-foreground">All stocked up!</p>
+            <p className="text-xs text-muted-foreground">No items running low right now.</p>
           </div>
-        ))}
-      </div>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {items.map((item, i) => (
+            <div key={i} className="flex items-center justify-between py-2 px-3 rounded-lg border border-border">
+              <div>
+                <p className="text-sm font-medium text-foreground">{item.name}</p>
+                <p className="text-xs text-muted-foreground">{item.status}</p>
+              </div>
+              <button className="text-sm font-medium text-primary hover:underline">Restock</button>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

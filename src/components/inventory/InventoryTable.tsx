@@ -3,7 +3,9 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Package, Plus } from "lucide-react";
+import { EmptyState } from "@/components/EmptyState";
+import { useNavigate } from "react-router-dom";
 
 const inventoryItems = [
   {
@@ -57,6 +59,24 @@ const inventoryItems = [
 ];
 
 export function InventoryTable() {
+  const navigate = useNavigate();
+  const items = inventoryItems; // Will be replaced with real data later
+
+  if (items.length === 0) {
+    return (
+      <div className="bg-card rounded-xl border border-border">
+        <EmptyState
+          icon={Package}
+          title="No parts in inventory"
+          description="Add your first car part to start tracking your inventory and stock levels."
+          actionLabel="Add New Part"
+          actionIcon={Plus}
+          onAction={() => navigate("/inventory/add")}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="bg-card rounded-xl border border-border">
       <Table>

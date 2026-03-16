@@ -11,8 +11,10 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { MessageCircle, ChevronLeft, ChevronRight } from "lucide-react";
+import { MessageCircle, ChevronLeft, ChevronRight, Users, UserPlus } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { EmptyState } from "@/components/EmptyState";
 
 const SAMPLE_CUSTOMERS = [
   { id: "1", name: "Chukwudi Okafor", phone: "+234 803 123 4567", location: "Ladipo Market", orders: 15, totalSpent: "₦450,000", lastOrder: "Oct 12, 2023" },
@@ -32,7 +34,9 @@ function getInitials(name: string) {
 }
 
 const Customers = () => {
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
+  const customers = SAMPLE_CUSTOMERS; // Will be replaced with real data later
   const totalCustomers = 1284;
   const pageSize = 5;
 
@@ -70,6 +74,16 @@ const Customers = () => {
           {/* Customer table */}
           <Card>
             <CardContent className="p-0">
+              {customers.length === 0 ? (
+                <EmptyState
+                  icon={Users}
+                  title="No customers yet"
+                  description="Add your first customer to start building your buyer directory and track orders."
+                  actionLabel="Add New Customer"
+                  actionIcon={UserPlus}
+                  onAction={() => navigate("/customers/add")}
+                />
+              ) : (
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -114,6 +128,7 @@ const Customers = () => {
                   ))}
                 </TableBody>
               </Table>
+              )}
             </CardContent>
           </Card>
 
