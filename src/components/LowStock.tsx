@@ -1,10 +1,7 @@
 import { AlertTriangle, PackageCheck } from "lucide-react";
 import { EmptyState } from "@/components/EmptyState";
 
-const items = [
-  { name: "Toyota Oil Filter (A1)", status: "Only 2 left" },
-  { name: "Honda Brake Pads", status: "Out of stock" },
-];
+const items: Array<{ name: string; status: string }> = [];
 
 export function LowStock() {
   return (
