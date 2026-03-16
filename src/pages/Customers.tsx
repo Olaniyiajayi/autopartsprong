@@ -11,8 +11,10 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { MessageCircle, ChevronLeft, ChevronRight } from "lucide-react";
+import { MessageCircle, ChevronLeft, ChevronRight, Users, UserPlus } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { EmptyState } from "@/components/EmptyState";
 
 const SAMPLE_CUSTOMERS = [
   { id: "1", name: "Chukwudi Okafor", phone: "+234 803 123 4567", location: "Ladipo Market", orders: 15, totalSpent: "₦450,000", lastOrder: "Oct 12, 2023" },
