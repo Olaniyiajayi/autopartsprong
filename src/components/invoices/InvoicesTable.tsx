@@ -31,6 +31,22 @@ export function InvoicesTable({ activeTab }: Props) {
     ? invoices
     : invoices.filter((inv) => inv.status === activeTab);
 
+  if (filtered.length === 0) {
+    return (
+      <div className="bg-card rounded-xl border border-border">
+        <EmptyState
+          icon={FileText}
+          title={activeTab === "All Invoices" ? "No invoices yet" : `No ${activeTab.toLowerCase()} invoices`}
+          description={activeTab === "All Invoices" 
+            ? "Create your first invoice to start tracking payments and revenue."
+            : `There are no invoices with "${activeTab}" status right now.`}
+          actionLabel={activeTab === "All Invoices" ? "Create Invoice" : undefined}
+          actionIcon={Plus}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="bg-card rounded-xl border border-border">
       <Table>

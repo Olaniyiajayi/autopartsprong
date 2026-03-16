@@ -128,6 +128,7 @@ const Customers = () => {
                   ))}
                 </TableBody>
               </Table>
+              )}
             </CardContent>
           </Card>
 
