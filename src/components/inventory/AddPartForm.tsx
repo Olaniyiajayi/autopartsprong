@@ -7,6 +7,8 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const conditions = [
   { value: "new", label: "New", desc: "Brand new OEM" },
@@ -14,8 +16,16 @@ const conditions = [
   { value: "nigerian-used", label: "Nigerian Used", desc: "Locally Used Part" },
 ];
 
+/** Map form condition to DB value (parts.condition). */
+const conditionToDb: Record<string, string> = {
+  new: "NEW",
+  tokunbo: "TOKUNBO",
+  "nigerian-used": "NIGERIAN",
+};
+
 export function AddPartForm() {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [partType, setPartType] = useState("Alternator");
   const [vehicleModel, setVehicleModel] = useState("Camry");
   const [yearRange, setYearRange] = useState("2018-2023");
@@ -25,11 +35,88 @@ export function AddPartForm() {
   const [condition, setCondition] = useState("tokunbo");
   const [price, setPrice] = useState("0.00");
   const [stock, setStock] = useState("1");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const generatedName = `Toyota ${vehicleModel} ${partType} (${yearRange})`;
 
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast({
+          title: "Not signed in",
+          description: "You must be signed in to add a part.",
+          variant: "destructive",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+
+      const { data: membership } = await supabase
+        .from("organization_members")
+        .select("organization_id")
+        .eq("user_id", user.id)
+        .limit(1)
+        .maybeSingle();
+
+      if (!membership?.organization_id) {
+        toast({
+          title: "No tenant assigned",
+          description: "You must be assigned to a store or hub to add parts.",
+          variant: "destructive",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+
+      const priceNum = parseFloat(price.replace(/,/g, "")) || null;
+      const stockNum = Math.max(0, parseInt(stock, 10) || 0);
+
+      const { error } = await supabase.from("parts").insert({
+        organization_id: membership.organization_id,
+        part_type: partType.trim(),
+        vehicle_model: vehicleModel.trim(),
+        year_range: yearRange.trim(),
+        local_nickname: nickname.trim() || null,
+        sku: sku.trim(),
+        condition: conditionToDb[condition] ?? condition.toUpperCase(),
+        category: category || null,
+        display_name: generatedName,
+        price_naira: priceNum,
+        quantity_in_stock: stockNum,
+        created_by: user.id,
+      });
+
+      if (error) {
+        toast({
+          title: "Failed to save part",
+          description: error.message,
+          variant: "destructive",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+
+      toast({
+        title: "Part saved",
+        description: `${generatedName} has been added to inventory.`,
+      });
+      navigate("/inventory");
+    } catch (err) {
+      toast({
+        title: "Error",
+        description: err instanceof Error ? err.message : "Something went wrong.",
+        variant: "destructive",
+      });
+      setIsSubmitting(false);
+    }
+  }
+
   return (
-    <div className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6">
       {/* Part Definition */}
       <div className="bg-card rounded-xl border border-border p-6 space-y-5">
         <div className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-foreground">
@@ -184,11 +271,17 @@ export function AddPartForm() {
 
       {/* Actions */}
       <div className="flex items-center justify-end gap-4 pt-4 border-t border-border">
-        <Button variant="ghost" onClick={() => navigate("/inventory")}>Cancel</Button>
-        <Button className="bg-primary text-primary-foreground hover:bg-primary/90 px-8">
-          Save Part to Inventory
+        <Button type="button" variant="ghost" onClick={() => navigate("/inventory")}>
+          Cancel
+        </Button>
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="bg-primary text-primary-foreground hover:bg-primary/90 px-8"
+        >
+          {isSubmitting ? "Saving…" : "Save Part to Inventory"}
         </Button>
       </div>
-    </div>
+    </form>
   );
 }
