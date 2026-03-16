@@ -3,7 +3,9 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Package, Plus } from "lucide-react";
+import { EmptyState } from "@/components/EmptyState";
+import { useNavigate } from "react-router-dom";
 
 const inventoryItems = [
   {
