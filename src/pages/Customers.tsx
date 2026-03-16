@@ -74,6 +74,16 @@ const Customers = () => {
           {/* Customer table */}
           <Card>
             <CardContent className="p-0">
+              {customers.length === 0 ? (
+                <EmptyState
+                  icon={Users}
+                  title="No customers yet"
+                  description="Add your first customer to start building your buyer directory and track orders."
+                  actionLabel="Add New Customer"
+                  actionIcon={UserPlus}
+                  onAction={() => navigate("/customers/add")}
+                />
+              ) : (
               <Table>
                 <TableHeader>
                   <TableRow>
