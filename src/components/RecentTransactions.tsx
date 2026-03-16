@@ -1,4 +1,5 @@
-import { Clock } from "lucide-react";
+import { Clock, ReceiptText } from "lucide-react";
+import { EmptyState } from "@/components/EmptyState";
 
 const transactions = [
   {
