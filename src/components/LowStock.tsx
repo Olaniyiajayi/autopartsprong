@@ -1,4 +1,5 @@
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, PackageCheck } from "lucide-react";
+import { EmptyState } from "@/components/EmptyState";
 
 const items = [
   { name: "Toyota Oil Filter (A1)", status: "Only 2 left" },
