@@ -16,13 +16,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { EmptyState } from "@/components/EmptyState";
 
-const SAMPLE_CUSTOMERS = [
-  { id: "1", name: "Chukwudi Okafor", phone: "+234 803 123 4567", location: "Ladipo Market", orders: 15, totalSpent: "₦450,000", lastOrder: "Oct 12, 2023" },
-  { id: "2", name: "Adesola Bakare", phone: "+234 802 456 7890", location: "Ikorodu", orders: 8, totalSpent: "₦210,500", lastOrder: "Oct 10, 2023" },
-  { id: "3", name: "Ibrahim Musa", phone: "+234 805 789 0123", location: "Kano Hub", orders: 22, totalSpent: "₦1,200,000", lastOrder: "Oct 11, 2023" },
-  { id: "4", name: "Blessing Okon", phone: "+234 807 012 3456", location: "Lekki Phase 1", orders: 5, totalSpent: "₦95,000", lastOrder: "Oct 05, 2023" },
-  { id: "5", name: "Ngozi Eze", phone: "+234 809 345 6789", location: "Aspamda", orders: 12, totalSpent: "₦310,000", lastOrder: "Oct 14, 2023" },
-];
+const SAMPLE_CUSTOMERS: Array<{
+  id: string; name: string; phone: string; location: string; orders: number; totalSpent: string; lastOrder: string;
+}> = [];
 
 function getInitials(name: string) {
   return name

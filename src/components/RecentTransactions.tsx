@@ -1,32 +1,9 @@
 import { Clock, ReceiptText } from "lucide-react";
 import { EmptyState } from "@/components/EmptyState";
 
-const transactions = [
-  {
-    time: "10:45 AM",
-    customer: "Emeka Obi",
-    order: "Brake Pad (Toyota Corolla)",
-    amount: "₦24,500",
-    via: "OPay",
-    viaColor: "bg-blue-500",
-  },
-  {
-    time: "09:30 AM",
-    customer: "Ladipo Wholesale",
-    order: "Engine Oil (5 Cartons)",
-    amount: "₦185,000",
-    via: "Moniepoint",
-    viaColor: "bg-green-500",
-  },
-  {
-    time: "08:15 AM",
-    customer: "Sarah Yusuf",
-    order: "Oil Filter",
-    amount: "₦6,000",
-    via: "Kuda",
-    viaColor: "bg-purple-500",
-  },
-];
+const transactions: Array<{
+  time: string; customer: string; order: string; amount: string; via: string; viaColor: string;
+}> = [];
 
 export function RecentTransactions() {
   return (

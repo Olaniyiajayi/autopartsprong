@@ -6,15 +6,9 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, MoreVertical, FileText, Plus } from "lucide-react";
 import { EmptyState } from "@/components/EmptyState";
 
-const invoices = [
-  { id: "INV-8821", date: "Oct 24, 2023", customer: "Emeka Obi", amount: 450000, status: "Paid", payment: "OPay" },
-  { id: "INV-8822", date: "Oct 24, 2023", customer: "Ladippo Wholesale", amount: 1250500, status: "Awaiting Payment", payment: "Moniepoint" },
-  { id: "INV-8823", date: "Oct 22, 2023", customer: "Chidi Spare Parts", amount: 85000, status: "Overdue", payment: "Kuda Bank" },
-  { id: "INV-8824", date: "Oct 21, 2023", customer: "Bolaji Motors", amount: 210000, status: "Paid", payment: "Bank Transfer" },
-  { id: "INV-8825", date: "Oct 20, 2023", customer: "Yusuf & Sons Ltd", amount: 55500, status: "Awaiting Payment", payment: "OPay" },
-  { id: "INV-8826", date: "Oct 19, 2023", customer: "Ikeja Logistics", amount: 320000, status: "Overdue", payment: "Kuda Bank" },
-  { id: "INV-8827", date: "Oct 18, 2023", customer: "Festac Garage", amount: 78200, status: "Paid", payment: "Moniepoint" },
-];
+const invoices: Array<{
+  id: string; date: string; customer: string; amount: number; status: string; payment: string;
+}> = [];
 
 const statusStyles: Record<string, string> = {
   "Paid": "bg-green-100 text-green-700",
