@@ -34,7 +34,9 @@ function getInitials(name: string) {
 }
 
 const Customers = () => {
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
+  const customers = SAMPLE_CUSTOMERS; // Will be replaced with real data later
   const totalCustomers = 1284;
   const pageSize = 5;
 
