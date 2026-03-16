@@ -38,7 +38,7 @@ const AddCustomer = () => {
     e.preventDefault();
     if (!name.trim() || !phone.trim() || !marketLocation) return;
     // Placeholder: would call API to add customer
-    navigate("/customers");
+    navigate("/dashboard/customers");
   };
 
   return (
@@ -47,7 +47,7 @@ const AddCustomer = () => {
       <main className="flex-1 flex flex-col pl-64 bg-background">
         <header className="fixed top-0 left-64 right-0 z-10 flex items-center justify-between px-6 py-4 border-b border-border bg-card">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <button onClick={() => navigate("/customers")} className="hover:text-foreground transition-colors">
+            <button onClick={() => navigate("/dashboard/customers")} className="hover:text-foreground transition-colors">
               Customers
             </button>
             <ChevronRight className="w-4 h-4" />
@@ -156,7 +156,7 @@ const AddCustomer = () => {
                   />
                 </div>
                 <div className="flex justify-end gap-2 pt-2">
-                  <Button type="button" variant="outline" onClick={() => navigate("/customers")}>
+                  <Button type="button" variant="outline" onClick={() => navigate("/dashboard/customers")}>
                     Cancel
                   </Button>
                   <Button type="submit" className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90">

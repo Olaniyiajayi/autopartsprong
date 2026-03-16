@@ -3,6 +3,10 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { DashboardLayout } from "./layouts/DashboardLayout";
+import Landing from "./pages/Landing.tsx";
+import Signup from "./pages/Signup.tsx";
+import Login from "./pages/Login.tsx";
 import Index from "./pages/Index.tsx";
 import Inventory from "./pages/Inventory.tsx";
 import Invoices from "./pages/Invoices.tsx";
@@ -21,14 +25,18 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/inventory" element={<Inventory />} />
-          <Route path="/inventory/add" element={<AddPart />} />
-          <Route path="/inventory/bulk-upload" element={<BulkUpload />} />
-          <Route path="/invoices" element={<Invoices />} />
-          <Route path="/customers" element={<Customers />} />
-          <Route path="/customers/add" element={<AddCustomer />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/" element={<Landing />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route element={<DashboardLayout />}>
+            <Route path="/dashboard" element={<Index />} />
+            <Route path="/dashboard/inventory" element={<Inventory />} />
+            <Route path="/dashboard/inventory/add" element={<AddPart />} />
+            <Route path="/dashboard/inventory/bulk-upload" element={<BulkUpload />} />
+            <Route path="/dashboard/invoices" element={<Invoices />} />
+            <Route path="/dashboard/customers" element={<Customers />} />
+            <Route path="/dashboard/customers/add" element={<AddCustomer />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
