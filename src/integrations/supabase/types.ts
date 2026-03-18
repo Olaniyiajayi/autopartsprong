@@ -14,16 +14,175 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      organization_members: {
+        Row: {
+          created_at: string
+          id: string
+          organization_id: string
+          role: Database["public"]["Enums"]["org_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          organization_id: string
+          role?: Database["public"]["Enums"]["org_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          organization_id?: string
+          role?: Database["public"]["Enums"]["org_role"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organization_members_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organizations: {
+        Row: {
+          address: string | null
+          created_at: string
+          email: string | null
+          id: string
+          logo_url: string | null
+          name: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          logo_url?: string | null
+          name: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          logo_url?: string | null
+          name?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      parts: {
+        Row: {
+          category: string | null
+          condition: string | null
+          created_at: string
+          created_by: string | null
+          display_name: string | null
+          id: string
+          local_nickname: string | null
+          organization_id: string
+          part_type: string
+          price_naira: number | null
+          quantity_in_stock: number
+          sku: string | null
+          updated_at: string
+          vehicle_model: string | null
+          year_range: string | null
+        }
+        Insert: {
+          category?: string | null
+          condition?: string | null
+          created_at?: string
+          created_by?: string | null
+          display_name?: string | null
+          id?: string
+          local_nickname?: string | null
+          organization_id: string
+          part_type: string
+          price_naira?: number | null
+          quantity_in_stock?: number
+          sku?: string | null
+          updated_at?: string
+          vehicle_model?: string | null
+          year_range?: string | null
+        }
+        Update: {
+          category?: string | null
+          condition?: string | null
+          created_at?: string
+          created_by?: string | null
+          display_name?: string | null
+          id?: string
+          local_nickname?: string | null
+          organization_id?: string
+          part_type?: string
+          price_naira?: number | null
+          quantity_in_stock?: number
+          sku?: string | null
+          updated_at?: string
+          vehicle_model?: string | null
+          year_range?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "parts_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          date_of_birth: string | null
+          full_name: string | null
+          gender: string | null
+          id: string
+          phone: string | null
+          state_of_origin: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          date_of_birth?: string | null
+          full_name?: string | null
+          gender?: string | null
+          id: string
+          phone?: string | null
+          state_of_origin?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          date_of_birth?: string | null
+          full_name?: string | null
+          gender?: string | null
+          id?: string
+          phone?: string | null
+          state_of_origin?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      user_has_org_access: { Args: { org_id: string }; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      org_role: "owner" | "admin" | "store_manager" | "viewer"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +309,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      org_role: ["owner", "admin", "store_manager", "viewer"],
+    },
   },
 } as const
