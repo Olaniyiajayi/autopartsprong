@@ -166,7 +166,7 @@ export default function Landing() {
       {/* Referral Section */}
       <section id="referral" className="py-20 md:py-28">
         <div className="container">
-          <div className="mx-auto max-w-2xl rounded-3xl bg-gradient-to-br from-primary via-primary/80 to-emerald-400 p-12 text-center">
+          <div className="mx-auto max-w-2xl rounded-3xl bg-gradient-to-br from-primary via-primary/80 to-accent p-12 text-center">
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary-foreground/15">
               <Users className="h-7 w-7 text-primary-foreground" />
             </div>
