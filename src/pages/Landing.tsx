@@ -1,18 +1,44 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Zap, Monitor, ShieldCheck, Users, Copy, CheckCircle } from "lucide-react";
 import heroImage from "@/assets/hero-blocks.jpg";
 import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Landing() {
   const [copied, setCopied] = useState(false);
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const { toast } = useToast();
   const referralLink = "autoparts.pro/waitlist?ref=ENGINE";
 
   const handleCopy = () => {
     navigator.clipboard.writeText(referralLink);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleWaitlist = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim()) {
+      toast({ title: "Email is required", variant: "destructive" });
+      return;
+    }
+    setLoading(true);
+    const { error } = await supabase.from("waitlist").insert({ email: email.trim(), phone: phone.trim() || null });
+    setLoading(false);
+    if (error) {
+      toast({ title: "Something went wrong", description: error.message, variant: "destructive" });
+    } else {
+      setShowSuccess(true);
+      setEmail("");
+      setPhone("");
+    }
   };
 
   return (
@@ -48,14 +74,17 @@ export default function Landing() {
                 The Engineering Revolution
               </span>
               <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-primary-foreground md:text-6xl leading-[1.1]">
-                The Future of Nigerian <span className="text-success">Spare Parts</span> is Coming.
+                The Future of Nigerian <span className="text-accent-foreground" style={{ color: 'hsl(25, 95%, 53%)' }}>Spare Parts</span> is Coming.
               </h1>
               <p className="mt-6 text-base text-primary-foreground/80 max-w-lg">
                 Join the Waitlist Today. From Ladipo to Aspamda, we are building the digital backbone for Nigerian merchants to scale their yard operations.
               </p>
-              <div className="mt-8 flex flex-col gap-3 max-w-sm">
+              <form onSubmit={handleWaitlist} className="mt-8 flex flex-col gap-3 max-w-sm">
                 <div className="relative">
                   <Input
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    type="email"
                     placeholder="Business Email Address"
                     className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 h-12 pl-10"
                   />
@@ -63,15 +92,17 @@ export default function Landing() {
                 </div>
                 <div className="relative">
                   <Input
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
                     placeholder="Phone Number (WhatsApp Preferred)"
                     className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 h-12 pl-10"
                   />
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-foreground/50">📞</span>
                 </div>
-                <Button className="h-12 bg-success text-success-foreground hover:bg-success/90 font-semibold rounded-lg">
-                  Secure Early Access
+                <Button type="submit" disabled={loading} className="h-12 bg-foreground text-background hover:bg-foreground/90 font-semibold rounded-lg">
+                  {loading ? "Submitting..." : "Secure Early Access"}
                 </Button>
-              </div>
+              </form>
               <p className="mt-4 text-xs text-primary-foreground/60">
                 Join 2,400+ mechanics and yard owners already in line.
               </p>
@@ -81,7 +112,7 @@ export default function Landing() {
                 <img src={heroImage} alt="Building blocks representing growth" className="w-full h-auto object-cover" />
               </div>
               <div className="absolute -bottom-4 left-4 flex items-center gap-2 rounded-xl bg-card p-3 shadow-lg border border-border">
-                <CheckCircle className="h-5 w-5 text-success" />
+                <CheckCircle className="h-5 w-5 text-primary" />
                 <div>
                   <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">Merchant Status</p>
                   <p className="text-sm font-bold text-foreground">Ladipo Verified</p>
@@ -109,7 +140,7 @@ export default function Landing() {
               },
               {
                 icon: ShieldCheck,
-                color: "bg-success/10 text-success",
+                color: "bg-primary/10 text-primary",
                 title: "Priority Inventory Access",
                 desc: 'Get first dibs on high-demand OEM and aftermarket stock coming through Aspamda and international shipments. Never tell a customer "Out of Stock" again.',
               },
@@ -135,7 +166,7 @@ export default function Landing() {
       {/* Referral Section */}
       <section id="referral" className="py-20 md:py-28">
         <div className="container">
-          <div className="mx-auto max-w-2xl rounded-3xl bg-gradient-to-br from-primary via-primary/80 to-success p-12 text-center">
+          <div className="mx-auto max-w-2xl rounded-3xl bg-gradient-to-br from-primary via-primary/80 to-accent p-12 text-center">
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary-foreground/15">
               <Users className="h-7 w-7 text-primary-foreground" />
             </div>
@@ -151,7 +182,7 @@ export default function Landing() {
               </div>
               <Button
                 onClick={handleCopy}
-                className="rounded-full bg-success text-success-foreground hover:bg-success/90 font-semibold px-6"
+                className="rounded-full bg-foreground text-background hover:bg-foreground/90 font-semibold px-6"
               >
                 {copied ? "Copied!" : "Copy Link"}
                 {copied ? <CheckCircle className="ml-1.5 h-4 w-4" /> : <Copy className="ml-1.5 h-4 w-4" />}
@@ -186,6 +217,22 @@ export default function Landing() {
           </div>
         </div>
       </footer>
+
+      {/* Success Modal */}
+      <Dialog open={showSuccess} onOpenChange={setShowSuccess}>
+        <DialogContent className="sm:max-w-md text-center">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+            <CheckCircle className="h-8 w-8 text-primary" />
+          </div>
+          <h3 className="mt-4 text-xl font-bold text-foreground">You're on the list! 🎉</h3>
+          <p className="mt-2 text-sm text-muted-foreground">
+            We've reserved your spot. You'll receive an email when it's time to set up your yard. Share your referral link to move up the queue!
+          </p>
+          <Button onClick={() => setShowSuccess(false)} className="mt-4 bg-primary text-primary-foreground hover:bg-primary/90">
+            Got it!
+          </Button>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
