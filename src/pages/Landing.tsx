@@ -74,7 +74,7 @@ export default function Landing() {
                 The Engineering Revolution
               </span>
               <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-primary-foreground md:text-6xl leading-[1.1]">
-                The Future of Nigerian <span className="text-orange-400">Spare Parts</span> is Coming.
+                The Future of Nigerian <span className="text-accent-foreground" style={{ color: 'hsl(25, 95%, 53%)' }}>Spare Parts</span> is Coming.
               </h1>
               <p className="mt-6 text-base text-primary-foreground/80 max-w-lg">
                 Join the Waitlist Today. From Ladipo to Aspamda, we are building the digital backbone for Nigerian merchants to scale their yard operations.
