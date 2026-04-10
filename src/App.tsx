@@ -25,17 +25,17 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Landing />} />
+          <Route path="/landing" element={<Landing />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route element={<DashboardLayout />}>
-            <Route path="/dashboard" element={<Index />} />
-            <Route path="/dashboard/inventory" element={<Inventory />} />
-            <Route path="/dashboard/inventory/add" element={<AddPart />} />
-            <Route path="/dashboard/inventory/bulk-upload" element={<BulkUpload />} />
-            <Route path="/dashboard/invoices" element={<Invoices />} />
-            <Route path="/dashboard/customers" element={<Customers />} />
-            <Route path="/dashboard/customers/add" element={<AddCustomer />} />
+            <Route path="/" element={<Index />} />
+            <Route path="/inventory" element={<Inventory />} />
+            <Route path="/inventory/add" element={<AddPart />} />
+            <Route path="/inventory/bulk-upload" element={<BulkUpload />} />
+            <Route path="/invoices" element={<Invoices />} />
+            <Route path="/customers" element={<Customers />} />
+            <Route path="/customers/add" element={<AddCustomer />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
