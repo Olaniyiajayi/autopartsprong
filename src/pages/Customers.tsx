@@ -77,7 +77,7 @@ const Customers = () => {
                   description="Add your first customer to start building your buyer directory and track orders."
                   actionLabel="Add New Customer"
                   actionIcon={UserPlus}
-                  onAction={() => navigate("/dashboard/customers/add")}
+                  onAction={() => navigate("/customers/add")}
                 />
               ) : (
               <Table>

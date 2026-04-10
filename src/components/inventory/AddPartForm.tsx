@@ -104,7 +104,7 @@ export function AddPartForm() {
         title: "Part saved",
         description: `${generatedName} has been added to inventory.`,
       });
-      navigate("/dashboard/inventory");
+      navigate("/inventory");
     } catch (err) {
       toast({
         title: "Error",
@@ -271,7 +271,7 @@ export function AddPartForm() {
 
       {/* Actions */}
       <div className="flex items-center justify-end gap-4 pt-4 border-t border-border">
-        <Button type="button" variant="ghost" onClick={() => navigate("/dashboard/inventory")}>
+        <Button type="button" variant="ghost" onClick={() => navigate("/inventory")}>
           Cancel
         </Button>
         <Button

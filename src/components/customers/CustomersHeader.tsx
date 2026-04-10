@@ -18,7 +18,7 @@ export function CustomersHeader() {
           />
         </div>
         <Button
-          onClick={() => navigate("/dashboard/customers/add")}
+          onClick={() => navigate("/customers/add")}
           className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90"
         >
           <UserPlus className="w-4 h-4" />
