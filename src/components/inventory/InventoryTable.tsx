@@ -26,7 +26,7 @@ export function InventoryTable() {
           description="Add your first car part to start tracking your inventory and stock levels."
           actionLabel="Add New Part"
           actionIcon={Plus}
-          onAction={() => navigate("/dashboard/inventory/add")}
+          onAction={() => navigate("/inventory/add")}
         />
       </div>
     );

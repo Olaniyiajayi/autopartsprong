@@ -43,7 +43,7 @@ export default function Login() {
         title: "Welcome back",
         description: "You have been signed in.",
       });
-      navigate("/dashboard");
+      navigate("/");
     } catch (err) {
       toast({
         title: "Error",
