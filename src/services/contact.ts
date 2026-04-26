@@ -54,7 +54,7 @@ export const createContact = async (data: ContactPost) => {
     headers["Authorization"] = `Bearer ${token}`; // Adjust to just `token` if custom authorizer expects no Bearer prefix
   }
 
-  const res = await fetch(`${apiUrl}/contact`, {
+  const res = await fetch(`${apiUrl}/`, {
     method: "POST",
     headers,
     body: JSON.stringify(data),
