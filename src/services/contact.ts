@@ -113,11 +113,19 @@ export const updateContact = async (data: ContactPut) => {
   return res.json();
 };
 
-export const getContacts = async (): Promise<Contact[]> => {
+export const getContacts = async (filters: { contact_type?: ContactType; limit?: number; last_evaluated_key?: string } = {}): Promise<{ items: Contact[]; last_evaluated_key?: any }> => {
   const apiUrl = (import.meta.env.VITE_API_URL || "https://3jksg6k247.execute-api.us-east-1.amazonaws.com/dev").replace(/\/$/, "");
   const headers = await getHeaders();
 
-  const res = await fetch(`${apiUrl}/`, {
+  const queryParams = new URLSearchParams();
+  if (filters.contact_type) queryParams.append("contact_type", filters.contact_type);
+  if (filters.limit) queryParams.append("limit", filters.limit.toString());
+  if (filters.last_evaluated_key) queryParams.append("last_evaluated_key", filters.last_evaluated_key);
+
+  const queryString = queryParams.toString();
+  const url = queryString ? `${apiUrl}/?${queryString}` : `${apiUrl}/`;
+
+  const res = await fetch(url, {
     method: "GET",
     headers,
   });
@@ -128,9 +136,16 @@ export const getContacts = async (): Promise<Contact[]> => {
   }
 
   const data = await res.json();
-  // The backend seems to return a list of contacts or a specific object. 
-  // Assuming it returns the array directly or in a results field.
-  return Array.isArray(data) ? data : (data.results || []);
+  
+  // Handle both old and new formats for robustness
+  if (Array.isArray(data)) {
+    return { items: data };
+  }
+  
+  return {
+    items: data.items || [],
+    last_evaluated_key: data.last_evaluated_key
+  };
 };
 
 export const getContact = async (contactId: string): Promise<Contact> => {

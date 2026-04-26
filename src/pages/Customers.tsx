@@ -37,8 +37,8 @@ const Customers = () => {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const data = await getContacts();
-        setCustomers(data);
+        const { items } = await getContacts({ contact_type: "CUSTOMER" });
+        setCustomers(items);
       } catch (error) {
         console.error("Failed to fetch customers:", error);
       } finally {
