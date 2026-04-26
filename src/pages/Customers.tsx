@@ -11,14 +11,11 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { MessageCircle, ChevronLeft, ChevronRight, Users, UserPlus } from "lucide-react";
-import { useState } from "react";
+import { MessageCircle, ChevronLeft, ChevronRight, Users, UserPlus, Loader2 } from "lucide-react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { EmptyState } from "@/components/EmptyState";
-
-const SAMPLE_CUSTOMERS: Array<{
-  id: string; name: string; phone: string; location: string; orders: number; totalSpent: string; lastOrder: string;
-}> = [];
+import { getContacts, Contact } from "@/services/contact";
 
 function getInitials(name: string) {
   return name
@@ -32,9 +29,26 @@ function getInitials(name: string) {
 const Customers = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
-  const customers = SAMPLE_CUSTOMERS; // Will be replaced with real data later
-  const totalCustomers = 1284;
-  const pageSize = 5;
+  const [customers, setCustomers] = useState<Contact[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const totalCustomers = customers.length;
+  const pageSize = 10;
+
+  useEffect(() => {
+    const fetchCustomers = async () => {
+      try {
+        const data = await getContacts();
+        setCustomers(data);
+      } catch (error) {
+        console.error("Failed to fetch customers:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchCustomers();
+  }, []);
+
+  const paginatedCustomers = customers.slice((page - 1) * pageSize, page * pageSize);
 
   return (
     <div className="flex min-h-screen w-full">
@@ -47,22 +61,19 @@ const Customers = () => {
             <Card>
               <CardContent className="p-6">
                 <p className="text-sm font-medium text-muted-foreground">TOTAL CUSTOMERS</p>
-                <p className="text-2xl font-bold text-foreground mt-1">1,284</p>
-                <p className="text-xs text-primary font-medium mt-1">📈 +12%</p>
+                <p className="text-2xl font-bold text-foreground mt-1">{totalCustomers.toLocaleString()}</p>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-6">
                 <p className="text-sm font-medium text-muted-foreground">ACTIVE THIS MONTH</p>
-                <p className="text-2xl font-bold text-foreground mt-1">452</p>
-                <p className="text-xs text-muted-foreground mt-1">of total base</p>
+                <p className="text-2xl font-bold text-foreground mt-1">-</p>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-6">
                 <p className="text-sm font-medium text-muted-foreground">TOP LOCATION</p>
-                <p className="text-2xl font-bold text-foreground mt-1">Ladipo</p>
-                <p className="text-xs text-muted-foreground mt-1">38% of orders</p>
+                <p className="text-2xl font-bold text-foreground mt-1">-</p>
               </CardContent>
             </Card>
           </div>
@@ -70,7 +81,12 @@ const Customers = () => {
           {/* Customer table */}
           <Card>
             <CardContent className="p-0">
-              {customers.length === 0 ? (
+              {isLoading ? (
+                <div className="flex flex-col items-center justify-center p-12 space-y-4">
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                  <p className="text-muted-foreground">Loading customers...</p>
+                </div>
+              ) : customers.length === 0 ? (
                 <EmptyState
                   icon={Users}
                   title="No customers yet"
@@ -85,35 +101,36 @@ const Customers = () => {
                   <TableRow>
                     <TableHead>NAME</TableHead>
                     <TableHead>PHONE NUMBER</TableHead>
-                    <TableHead>LOCATION</TableHead>
-                    <TableHead>ORDERS</TableHead>
-                    <TableHead>TOTAL SPENT</TableHead>
-                    <TableHead>LAST ORDER</TableHead>
+                    <TableHead>LOCATION (CITY)</TableHead>
+                    <TableHead>PAYMENT TYPE</TableHead>
+                    <TableHead>ACCOUNT NO</TableHead>
                     <TableHead>ACTIONS</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {SAMPLE_CUSTOMERS.map((customer) => (
-                    <TableRow key={customer.id}>
+                  {paginatedCustomers.map((customer) => (
+                    <TableRow key={customer.contact_id}>
                       <TableCell>
                         <div className="flex items-center gap-3">
                           <Avatar className="h-9 w-9">
                             <AvatarFallback className="bg-primary/10 text-primary text-sm font-medium">
-                              {getInitials(customer.name)}
+                              {getInitials(customer.contact_name)}
                             </AvatarFallback>
                           </Avatar>
-                          <span className="font-medium">{customer.name}</span>
+                          <span className="font-medium">{customer.contact_name}</span>
                         </div>
                       </TableCell>
-                      <TableCell className="text-muted-foreground">{customer.phone}</TableCell>
-                      <TableCell>{customer.location}</TableCell>
-                      <TableCell>{customer.orders}</TableCell>
-                      <TableCell>{customer.totalSpent}</TableCell>
-                      <TableCell className="text-muted-foreground">{customer.lastOrder}</TableCell>
+                      <TableCell className="text-muted-foreground">{customer.contact_phone}</TableCell>
+                      <TableCell>{customer.delivery_address?.city || "-"}</TableCell>
+                      <TableCell>{customer.payment_type || "-"}</TableCell>
+                      <TableCell>{customer.account_number || "-"}</TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
-                          <button className="text-primary text-sm font-medium hover:underline">
-                            View Profile
+                          <button 
+                            onClick={() => navigate(`/customers/edit/${customer.contact_id}`)}
+                            className="text-primary text-sm font-medium hover:underline"
+                          >
+                            Edit Profile
                           </button>
                           <Button size="icon" variant="outline" className="h-9 w-9 bg-primary/10 border-primary/20 text-primary hover:bg-primary/20">
                             <MessageCircle className="w-4 h-4" />
@@ -129,30 +146,32 @@ const Customers = () => {
           </Card>
 
           {/* Pagination */}
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-muted-foreground">
-              Showing {pageSize} of {totalCustomers.toLocaleString()} customers
-            </p>
-            <div className="flex items-center gap-1">
-              <Button variant="outline" size="icon" className="h-9 w-9" onClick={() => setPage((p) => Math.max(1, p - 1))}>
-                <ChevronLeft className="w-4 h-4" />
-              </Button>
-              {[1, 2, 3].map((n) => (
-                <Button
-                  key={n}
-                  variant={page === n ? "default" : "outline"}
-                  size="icon"
-                  className="h-9 w-9"
-                  onClick={() => setPage(n)}
-                >
-                  {n}
+          {totalCustomers > pageSize && (
+            <div className="flex items-center justify-between">
+              <p className="text-sm text-muted-foreground">
+                Showing {paginatedCustomers.length} of {totalCustomers.toLocaleString()} customers
+              </p>
+              <div className="flex items-center gap-1">
+                <Button variant="outline" size="icon" className="h-9 w-9" onClick={() => setPage((p) => Math.max(1, p - 1))}>
+                  <ChevronLeft className="w-4 h-4" />
                 </Button>
-              ))}
-              <Button variant="outline" size="icon" className="h-9 w-9" onClick={() => setPage((p) => p + 1)}>
-                <ChevronRight className="w-4 h-4" />
-              </Button>
+                {Array.from({ length: Math.ceil(totalCustomers / pageSize) }, (_, i) => i + 1).map((n) => (
+                  <Button
+                    key={n}
+                    variant={page === n ? "default" : "outline"}
+                    size="icon"
+                    className="h-9 w-9"
+                    onClick={() => setPage(n)}
+                  >
+                    {n}
+                  </Button>
+                ))}
+                <Button variant="outline" size="icon" className="h-9 w-9" onClick={() => setPage((p) => Math.min(Math.ceil(totalCustomers / pageSize), p + 1))}>
+                  <ChevronRight className="w-4 h-4" />
+                </Button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </main>
 

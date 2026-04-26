@@ -14,6 +14,7 @@ import AddPart from "./pages/AddPart.tsx";
 import BulkUpload from "./pages/BulkUpload.tsx";
 import Customers from "./pages/Customers.tsx";
 import AddCustomer from "./pages/AddCustomer.tsx";
+import EditCustomer from "./pages/EditCustomer.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -37,6 +38,7 @@ const App = () => (
             <Route path="/invoices" element={<Invoices />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/customers/add" element={<AddCustomer />} />
+            <Route path="/customers/edit/:id" element={<EditCustomer />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
