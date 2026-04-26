@@ -26,7 +26,7 @@ export interface ContactPost {
 }
 
 export const createContact = async (data: ContactPost) => {
-  const apiUrl = import.meta.env.VITE_API_URL || "http://127.0.0.1:3000";
+  const apiUrl = (import.meta.env.VITE_API_URL || "https://3jksg6k247.execute-api.us-east-1.amazonaws.com/dev").replace(/\/$/, "");
   
   const res = await fetch(`${apiUrl}/contact`, {
     method: "POST",
