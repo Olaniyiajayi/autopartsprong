@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { createContact, ContactPost, PaymentType } from "@/services/contact";
 
 const MARKET_LOCATIONS = [
   "Ladipo Market",
@@ -29,16 +30,44 @@ const AddCustomer = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [businessName, setBusinessName] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
   const [email, setEmail] = useState("");
   const [marketLocation, setMarketLocation] = useState("");
+  const [paymentType, setPaymentType] = useState<PaymentType | "">("");
   const [notes, setNotes] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !phone.trim() || !marketLocation) return;
-    // Placeholder: would call API to add customer
-    navigate("/customers");
+    
+    setIsLoading(true);
+    try {
+      const payload: ContactPost = {
+        contact_name: name,
+        contact_phone: phone,
+        contact_email: email || undefined,
+        account_number: accountNumber || undefined,
+        payment_type: paymentType ? (paymentType as PaymentType) : undefined,
+        contact_type: "CUSTOMER",
+        delivery_address: {
+          city: marketLocation,
+        },
+        same_as_delivery_address: true,
+        billing_address: {
+          city: marketLocation,
+        },
+        note: notes || undefined,
+      };
+
+      await createContact(payload);
+      navigate("/customers");
+    } catch (error) {
+      console.error("Failed to add customer:", error);
+      alert("Error adding customer. Check console for details.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -111,12 +140,12 @@ const AddCustomer = () => {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="business">Business Name (Optional)</Label>
+                    <Label htmlFor="accountNumber">Company / Account Number (Optional)</Label>
                     <Input
-                      id="business"
-                      placeholder="Shop or Company Name"
-                      value={businessName}
-                      onChange={(e) => setBusinessName(e.target.value)}
+                      id="accountNumber"
+                      placeholder="Shop Code or Account No"
+                      value={accountNumber}
+                      onChange={(e) => setAccountNumber(e.target.value)}
                     />
                   </div>
                   <div className="space-y-2">
@@ -130,20 +159,35 @@ const AddCustomer = () => {
                     />
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="location">Market Location *</Label>
-                  <Select value={marketLocation} onValueChange={setMarketLocation}>
-                    <SelectTrigger id="location" className={!marketLocation ? "text-muted-foreground" : ""}>
-                      <SelectValue placeholder="Select a market location" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {MARKET_LOCATIONS.map((loc) => (
-                        <SelectItem key={loc} value={loc}>
-                          {loc}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="location">Market Location * (City)</Label>
+                    <Select value={marketLocation} onValueChange={setMarketLocation} required>
+                      <SelectTrigger id="location" className={!marketLocation ? "text-muted-foreground" : ""}>
+                        <SelectValue placeholder="Select a market location" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {MARKET_LOCATIONS.map((loc) => (
+                          <SelectItem key={loc} value={loc}>
+                            {loc}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="paymentType">Payment Type (Optional)</Label>
+                    <Select value={paymentType} onValueChange={(val) => setPaymentType(val as PaymentType)}>
+                      <SelectTrigger id="paymentType" className={!paymentType ? "text-muted-foreground" : ""}>
+                        <SelectValue placeholder="Select a payment type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="CASH">CASH</SelectItem>
+                        <SelectItem value="ACCOUNT">ACCOUNT</SelectItem>
+                        <SelectItem value="CAPRICORN">CAPRICORN</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="notes">Notes</Label>
@@ -156,12 +200,12 @@ const AddCustomer = () => {
                   />
                 </div>
                 <div className="flex justify-end gap-2 pt-2">
-                  <Button type="button" variant="outline" onClick={() => navigate("/customers")}>
+                  <Button type="button" variant="outline" onClick={() => navigate("/customers")} disabled={isLoading}>
                     Cancel
                   </Button>
-                  <Button type="submit" className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90">
+                  <Button type="submit" className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90" disabled={isLoading}>
                     <UserPlus className="w-4 h-4" />
-                    Add Customer
+                    {isLoading ? "Adding..." : "Add Customer"}
                   </Button>
                 </div>
               </form>
