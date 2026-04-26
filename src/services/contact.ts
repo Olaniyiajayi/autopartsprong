@@ -1,3 +1,6 @@
+import { supabase } from "@/integrations/supabase/client";
+import { getSession } from "@/lib/cognito";
+
 export type PaymentType = "ACCOUNT" | "CASH" | "CAPRICORN";
 export type ContactType = "CUSTOMER" | "SUPPLIER" | "BOTH";
 
@@ -28,11 +31,32 @@ export interface ContactPost {
 export const createContact = async (data: ContactPost) => {
   const apiUrl = (import.meta.env.VITE_API_URL || "https://3jksg6k247.execute-api.us-east-1.amazonaws.com/dev").replace(/\/$/, "");
   
+  let token = "";
+  try {
+    const sSession = await supabase.auth.getSession();
+    if (sSession.data.session?.access_token) {
+      token = sSession.data.session.access_token;
+    } else {
+      const cSession = getSession();
+      if (cSession?.idToken) {
+        token = cSession.idToken; // Try Cognito fallback
+      }
+    }
+  } catch (e) {
+    console.error("Auth session fetch error:", e);
+  }
+
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+  
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`; // Adjust to just `token` if custom authorizer expects no Bearer prefix
+  }
+
   const res = await fetch(`${apiUrl}/contact`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers,
     body: JSON.stringify(data),
   });
 
