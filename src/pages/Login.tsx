@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { signInWithPassword } from "@/lib/cognito";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -26,27 +26,15 @@ export default function Login() {
     }
     setIsSubmitting(true);
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email: email.trim(),
-        password,
-      });
-      if (error) {
-        toast({
-          title: "Login failed",
-          description: error.message,
-          variant: "destructive",
-        });
-        setIsSubmitting(false);
-        return;
-      }
+      await signInWithPassword(email.trim(), password);
       toast({
         title: "Welcome back",
         description: "You have been signed in.",
       });
-      navigate("/");
+      navigate("/app");
     } catch (err) {
       toast({
-        title: "Error",
+        title: "Login failed",
         description: err instanceof Error ? err.message : "Something went wrong.",
         variant: "destructive",
       });
